@@ -11,6 +11,10 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -58,9 +62,13 @@ public class GoogleMapActivity extends MapActivity {
 			Intent intent = new Intent(this, LocationManagerService.class);
 			bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 		}
-		if(mBound){
-			Location location = mService.getCurrentLocation();
-			if(location != null) updateMyLocation(location);
+		// takes a while after binding, cannot immediately use mService
+		// that's why this is else instead of another if or without flow control
+		else{
+			if(mService.isLocationUpdated()){
+				updateMyLocation(mService.getCurrentLocation());
+				mService.markLocationOutdated();
+			}
 		}
 	}
 
@@ -81,7 +89,7 @@ public class GoogleMapActivity extends MapActivity {
 	public void onDestroy(){
 		super.onDestroy();
 		if(mBound){
-			mService.stopSelf();
+			mService.stopSelf(); // Remove it later
 			unbindService(mConnection);
 			mBound=false;
 		}
@@ -93,6 +101,36 @@ public class GoogleMapActivity extends MapActivity {
 		return false;
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu){
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_google_map, menu);
+		
+		//return false menu is not to be shown
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()) {
+		
+			case R.id.menu_refresh:
+				if(mBound){
+					if(mService.isLocationUpdated()){
+						updateMyLocation(mService.getCurrentLocation());
+						mService.markLocationOutdated();
+					}
+					Toast.makeText(this, "Refreshed!", Toast.LENGTH_SHORT).show();
+				}
+				else{
+					Toast.makeText(this, "Can't refresh, try later!", Toast.LENGTH_SHORT).show();
+				}
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+	
 	// TODO create hashmap or list of itemizedOverlay for each user/friend
 	// Adding a new location is simply adding to the corresponding
 	// itemizedOverlay

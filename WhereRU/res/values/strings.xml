@@ -2,8 +2,8 @@
 
     <string name="app_name">WhereRU</string>
     <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
     <string name="title_activity_google_map">GoogleMap</string>
     <string name="title_activity_main_tab">MainTab</string>
+    <string name="menu_refresh">Refresh</string>
 
 </resources>

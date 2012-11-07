@@ -22,6 +22,7 @@ public class LocationManagerService extends Service implements LocationListener{
 	private LocationManager locationManager; 
 	private final IBinder mBinder = new LocationManagerBinder();
 	private Location currentBestLocation;
+	private boolean updated = false;
 	
 	public class LocationManagerBinder extends Binder{
 		LocationManagerService getService(){
@@ -60,6 +61,7 @@ public class LocationManagerService extends Service implements LocationListener{
 		if(isBetterLocation(location, currentBestLocation)){
 			Log.d(DEBUG_TAG, "New Location");
 			currentBestLocation = location;
+			updated = true;
 		}
 	}
 
@@ -79,6 +81,14 @@ public class LocationManagerService extends Service implements LocationListener{
 	// Returns my current location
 	public Location getCurrentLocation(){
 		return currentBestLocation;
+	}
+	
+	public boolean isLocationUpdated(){
+		return updated;
+	}
+	
+	public void markLocationOutdated(){
+		updated = false;
 	}
 
 	/** Determines whether one Location reading is better than the current Location fix
