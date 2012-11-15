@@ -5,6 +5,7 @@
 	
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
@@ -17,7 +18,7 @@
         
         <service android:name=".LocationManagerService" />
         <activity
-            android:name=".MainTab"
+            android:name=".MainTabFragmentActivity"
             android:label="@string/title_activity_main_tab" 
             android:theme="@android:style/Theme.NoTitleBar" >
             
@@ -27,9 +28,14 @@
             android:name=".GoogleMapActivity"
             android:label="@string/title_activity_google_map"
         	android:theme="@android:style/Theme.NoTitleBar">
+            
+        </activity>
+        
+        <activity
+            android:name=".MainPageActivity"
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

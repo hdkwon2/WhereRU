@@ -5,5 +5,10 @@
     <string name="title_activity_google_map">GoogleMap</string>
     <string name="title_activity_main_tab">MainTab</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="username">Username</string>
+    <string name="register_button_text">Register</string>
+    <string name="register_dialog_message">Please enter a user name</string>
+    <string name="register_dialog_cancel">Cancel</string>
+    <string name="register_dialog_title">Registration</string>
 
 </resources>

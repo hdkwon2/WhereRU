@@ -1,5 +1,10 @@
 package edu.illinois.whereru;
 
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -59,9 +64,27 @@ public class LocationManagerService extends Service implements LocationListener{
 
 	public void onLocationChanged(Location location) {
 		if(isBetterLocation(location, currentBestLocation)){
-			Log.d(DEBUG_TAG, "New Location");
+			Log.d(DEBUG_TAG, location.toString());
 			currentBestLocation = location;
 			updated = true;
+//			int latitude = (int) (location.getLatitude() * 1E6);
+//			int longitude = (int) (location.getLongitude() * 1E6);
+			double latitude = location.getLatitude();
+			double longitude = location.getLongitude();
+			long time = location.getTime();
+			String userId = getSharedPreferences(MainPageActivity.PREFERENCE_NAME,
+					0).getString(MainPageActivity.PREF_USER_ID, "");
+			DBConnector dbConnector = new DBConnector();
+			dbConnector.execute(DBConnector.UPDATE_USER_INFO, userId, latitude+"", longitude+"", time+"");
+			try {
+				JSONObject json = dbConnector.get();
+				Log.d(DEBUG_TAG, json.toString());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+			
 		}
 	}
 

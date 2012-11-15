@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
@@ -27,9 +28,9 @@ public class GoogleMapItemizedOverlay extends ItemizedOverlay{
 	public void addOverlay(OverlayItem overlay){
 		if(mOverlays.size() >= mCapacity){
 			mOverlays.set(index, overlay);
-			index = index++ % mCapacity;
+			index = ++index % mCapacity;
 		}
-		mOverlays.add(overlay);
+		else mOverlays.add(overlay);
 		populate();
 	}
 	
@@ -43,9 +44,11 @@ public class GoogleMapItemizedOverlay extends ItemizedOverlay{
 		return mOverlays.size();
 	}
 	
+	//TODO make a balloon that shows the time and user 
 	@Override
 	protected boolean onTap(int index){
 		OverlayItem item = mOverlays.get(index);
+		
 		return true;
 	}
 	
