@@ -1,7 +1,6 @@
 <resources>
 
     <string name="app_name">WhereRU</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_google_map">GoogleMap</string>
     <string name="title_activity_main_tab">MainTab</string>
     <string name="menu_refresh">Refresh</string>
@@ -10,5 +9,24 @@
     <string name="register_dialog_message">Please enter a user name</string>
     <string name="register_dialog_cancel">Cancel</string>
     <string name="register_dialog_title">Registration</string>
+    <string name="friend_request_accept">Accept</string>
+    <string name="friend_request_decline">Decline</string>
+    <string name="pref_marker_type_pref">pref_marker_type_pref</string>
+    <string name="pref_marker_type_button_title">Marker Type</string>
+    <string name="pref_marker_type_button_dialog_title">Choose a Marker </string>
+    <string name="pref_marker_number_pref">pref_marker_number_pref</string>
+    <string name="pref_marker_number_button_title">Marker Numbers</string>
+    <string name="pref_marker_number_button_dialog_title">Visible Marker Numbers</string>
+    <string name="title_activity_friend_settings">Settings</string>
+    <string name="pref_marker_type_red">Red</string>
+    <string name="pref_marker_type_purple">Purple</string>
+    <string name="pref_marker_type_white">White</string>
+    <string name="pref_marker_type_grey">Grey</string>
+    <string name="friend_image_content_desc">Profile Image</string>
+    <string name="main_page_image_content_desc">Main Page</string>
+    <string name="friend_name_edit_content_desc">Edit Name</string>
+    <string name="edit_friend_name_ok">OK</string>
+    <string name="edit_friend_name_message">Please enter new nickname</string>
+    <string name="title_activity_edit_friend_name">Edit Friend Name</string>
 
 </resources>

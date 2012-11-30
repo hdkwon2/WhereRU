@@ -8,6 +8,7 @@
         android:id="@+id/main_page_image_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:contentDescription="@string/main_page_image_content_desc"
         android:src="@drawable/ic_main_page" />
  
 </LinearLayout>

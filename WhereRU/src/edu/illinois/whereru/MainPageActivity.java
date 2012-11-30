@@ -1,10 +1,26 @@
+/*
+* 
+* Copyright (C) 2012 Hyuk Don Kwon
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 package edu.illinois.whereru;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -22,6 +38,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Start up activity.
+ * Pops up a registration dialog when the application starts up for the first time.
+ * Otherwise do some background DB connections before loading the main tab activity.
+ * 
+ * @author don
+ *
+ */
 public class MainPageActivity extends Activity{
 
 	public static final String PREFERENCE_NAME = "edu.illinois.user_info_pref";
@@ -30,13 +54,6 @@ public class MainPageActivity extends Activity{
 	public static final String PREF_APPLICATION_STATE = "application_state";
 	public static final String PREF_USER_ID = "user_id";
 	private static final String DEBUG_TAG = "[MainPageActivity]";
-	public static final String TAG_SUCCESS = "success";
-	public static final String TAG_MESSAGE = "message";
-	public static final String TAG_INSERT_ID = "insert_id";
-	public static final String TAG_FRIENDS_INFO = "friends_info";
-	public static final String TAG_FRIEND_ID = "friend_id";
-	public static final String TAG_LOCATION = "location";
-	public static final String TAG_TIME_STAMP = "time_stamp";
 	
 	private EditText editText;
 	private SharedPreferences userInfo;
@@ -49,31 +66,32 @@ public class MainPageActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_page);
 		
-		intent = new Intent(this,GoogleMapActivity.class);
+		intent = new Intent(this,MainTabFragmentActivity.class);
 		userInfo = getSharedPreferences(PREFERENCE_NAME, 0);	
 		boolean firstStart = userInfo.getBoolean(PREF_APPLICATION_STATE, true);
 		
 		// If it is the first time starting this application, load up registration dialog
-		if(!firstStart)	showRegistrationDialog();			
+		if(firstStart)	showRegistrationDialog();			
 		
-		else{
-			// Load friends information from DB
-			getUserInfoFromDB();	
-//			intent.putExtra()
+		else{ 
+
 			// Give sometime to brag about the main page.
 			Timer timer= new Timer();
 			timer.schedule(new TimerTask(){
 
 				@Override
 				public void run() {
-					// start GoogleMapActivity
+					// start main tab fragment activity
 					startActivity(intent);
 					// terminate the main page
-					// without this back button would start this activity again.
+					// without this, back button would start this activity again.
 					finish();
 				}
 				
 			}, 2000);
+			
+			// build friend info from DB
+			FriendBuilder.build(getApplicationContext());
 		}
 		
 	}
@@ -119,28 +137,25 @@ public class MainPageActivity extends Activity{
 				boolean successful = false;
 				String userId = null;
 				
+				// Parse the response returned from DB
 				if (result != null) {
-					try {
-						successful = result.getInt(TAG_SUCCESS) == 1;
-						userId = result.getInt(TAG_INSERT_ID) + "";
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
+					successful = JSONObjectParser.getSuccess(result);
+					userId = JSONObjectParser.getUserId(result)+"";
 				}
 				
-				// Store user info locally
-				if(successful){
+				
+				if(successful){ // Store user info locally
 					// user id returned from DB
 					preferenceEditor.putString(PREF_USER_ID, userId);
 					preferenceEditor.putString(PREF_USER_NAME, userName);
 					preferenceEditor.putString(PREF_DEVICE_ID, deviceID);
 					preferenceEditor.putBoolean(PREF_APPLICATION_STATE, false);
 					preferenceEditor.commit();
-					// start googlemapactivity
+					// start main tab activity
 					startActivity(intent); 
 					finish();
 				} else{
-					// notify user of failure, let users press cancle or back button to exit.
+					// notify users of failure, let users press back button to exit.
 							Toast.makeText(
 									getApplicationContext(),
 									"Failed to register, please try again later",
@@ -162,40 +177,6 @@ public class MainPageActivity extends Activity{
 		dialog = builder.create();
 		dialog.show();
 	}
-	
-	/*
-	 * Connec to DB and get user info
-	 * parse the json file here, pass the locations and usernames to the map activity
-	 * Gets the data before starting map activity
-	 */
-	private void getUserInfoFromDB(){
-		DBConnector dBConnector =  new DBConnector();
-		dBConnector.execute(DBConnector.GET_USER_INFO, userInfo.getString(PREF_USER_ID, "-1"));
-		
-		JSONObject result = null;
-		
-		try {
-			result = dBConnector.get();
-		} catch (InterruptedException ignored) {
-			//Ignored if interrupted
-			Log.e(DEBUG_TAG, "Interrupted");
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-		
-		boolean successful = false;
-		try {
-			if (result != null) {
 
-				successful = result.getInt(TAG_SUCCESS) == 1;
-				if (successful) {
-//					result.getJSONArray(TAG_FRIENDS_INFO).g
-				} else {
-//					finish();
-				}
-			}
-		} catch (JSONException e) {
 
-		}
-	}
 }

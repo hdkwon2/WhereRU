@@ -12,7 +12,7 @@ if(isset($_GET["user_id"])){
 	
 	
 	//get the user info
-	$result = mysql_query("SELECT locations.user_id, locations.location, locations.time_stamp, global_user_info.user_info_name 
+	$result = mysql_query("SELECT locations.user_id, X(locations.location), Y(locations.location), locations.time_stamp, global_user_info.user_info_name 
 							FROM user_$user_id 
 							LEFT JOIN locations 
 								ON user_$user_id.user_id = locations.user_id 
@@ -23,21 +23,24 @@ if(isset($_GET["user_id"])){
 	if($result){
 		// if at least one user is found
 		if(mysql_num_rows($result) > 0){
-			$result = mysql_fetch_array($result);
-			
-			$user_info = array();
-			$user_info["friend_id"] = $result["user_id"];
-			$user_info["location"] = $result["location"];
-			$user_info["time_stamp"] = $result["time_stamp"];
-			$user_info["user_name"] = $result["user_info_name"];
-			$response["success"] = 1;
 			$response["friends_info"] = array();
+			$response["success"] = 1;
 			
-			array_push($response["friends_info"], $user_info);
+			while($row = mysql_fetch_array($result)){
+			
+				$user_info = array();
+				$user_info["id"] = $row["user_id"];
+				$user_info["latitude"] = $row["X(locations.location)"];
+				$user_info["longitude"] = $row["Y(locations.location)"];
+				$user_info["time_stamp"] = $row["time_stamp"];
+				$user_info["nickname"] = $row["user_info_name"];
+				array_push($response["friends_info"], $user_info);
+			}
+			
 			echo json_encode($response);
 		} else{
-			$response["success"] = 0;
-			$response["message"] = "No matching user found";
+			$response["success"] = 1;
+			$response["message"] = "No Friend";
 			echo json_encode($response);
 		}
 	} else{

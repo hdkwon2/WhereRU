@@ -13,7 +13,7 @@ if(isset($_POST['name']) && isset($_POST['device_id'])){
 	$db = new DB_CONNECT();
 	
 	//inserting a new entry to the global user info table
-	$result = mysql_query("INSERT INTO global_user_info(user_info_name, user_info_device_id, user_info_num_loc) VALUES('$name', '$device_id', 0)");
+	$result = mysql_query("INSERT INTO global_user_info(user_info_name, user_info_device_id) VALUES('$name', '$device_id')");
 	$insert_id = mysql_insert_id();
 	// create a seperate table for this user holding friends id
 	$result2 = mysql_query("CREATE TABLE user_$insert_id(

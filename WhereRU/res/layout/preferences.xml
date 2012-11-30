@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="@string/pref_marker_type_pref"
+        android:title="@string/pref_marker_type_button_title"
+        android:dialogTitle="@string/pref_marker_type_button_dialog_title"
+        android:entries="@array/pref_marker_type_entries"
+        android:entryValues="@array/pref_marker_type_entry_values"
+        android:defaultValue="red" />
+    
+    <ListPreference
+        android:key="@string/pref_marker_number_pref"
+        android:title="@string/pref_marker_number_button_title"
+        android:dialogTitle="@string/pref_marker_number_button_dialog_title"
+        android:entries="@array/pref_marker_number_values"
+        android:entryValues="@array/pref_marker_number_values"
+        android:defaultValue="default" />
+</PreferenceScreen>

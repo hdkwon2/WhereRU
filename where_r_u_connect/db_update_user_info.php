@@ -1,7 +1,4 @@
-Progress:
 
-need to figure out how to add location point when user has more than 10
-need to figure out how to parse the data sent back as the result of user info get
 <?php
 
 $response = array();
@@ -21,15 +18,16 @@ if(isset($_POST["user_id"])){
 		$long = $_POST["longitude"];
 		$time_stamp = $_POST["time_stamp"];
 		
-		// Get number of locations currently stored for this user
-		$num_loc = mysql_query("SELECT user_info_num_loc FROM global_user_info WHERE user_info_id=$user_id");
-
-		if($num_loc < DB_MAX_NUM_LOC){
+		
+		$count = mysql_query("SELECT COUNT(*) FROM locations WHERE user_id = $user_id");
+		
+		if($count < DB_MAX_NUM_LOC){
 			// room for additional locations, add new location to locations table
 			$result = mysql_query("INSERT INTO locations(user_id, location, time_stamp) VALUES($user_id, GeomFromText('POINT($lat $long)'), $time_stamp)");
 		} else{
-			
-			$result = mysql_query("UPDATE  SET user_info_loc1='$user_loc' WHERE user_info_id='$user_id'");
+			// need to replace one of the stored point
+			// replace the one with the smallest time stamp (earliest location)
+			$result = mysql_query("UPDATE locations SET location=GeomFromText('POINT($lat $long)'), time_stamp=$time_stamp ORDER BY time_stamp LIMIT 1");
 		}
 		
 		if($result){

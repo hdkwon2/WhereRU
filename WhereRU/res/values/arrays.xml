@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <array name="pref_marker_type_entries">
+        <item name="red">@string/pref_marker_type_red</item>
+        <item name="purple">@string/pref_marker_type_purple</item>
+        <item name="white">@string/pref_marker_type_white</item>
+        <item name="grey">@string/pref_marker_type_grey</item>
+    </array>
+    
+    <string-array name="pref_marker_type_entry_values">
+        <item name="red">"0"</item>
+        <item name="purple">"1"</item>
+        <item name="white">"2"</item>
+        <item name="grey">"3"</item>
+    </string-array>
+    
+    <string-array name="pref_marker_number_values">
+        <item name="1">"1"</item>
+        <item name="2">"2"</item>
+        <item name="default">"3"</item>
+        <item name="4">"4"</item>
+        <item name="5">"5"</item>
+        <item name="6">"6"</item>
+        <item name="7">"7"</item>
+        <item name="8">"8"</item>
+        <item name="9">"9"</item>
+        <item name="10">"10"</item>
+    </string-array>
+</resources>

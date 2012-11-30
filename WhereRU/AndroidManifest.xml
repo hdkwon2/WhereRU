@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="17" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -21,20 +21,30 @@
             android:name=".MainTabFragmentActivity"
             android:label="@string/title_activity_main_tab" 
             android:theme="@android:style/Theme.NoTitleBar" >
-            
         </activity>
         
         <activity
             android:name=".GoogleMapActivity"
             android:label="@string/title_activity_google_map"
-        	android:theme="@android:style/Theme.NoTitleBar">
-            
+        	android:theme="@android:style/Theme.NoTitleBar">    
+        </activity>
+        
+        <activity
+            android:name=".FriendSettingsActivity"
+            android:label="@string/title_activity_friend_settings"
+   			android:theme="@android:style/Theme.NoTitleBar">
+   		</activity>
+   		
+        <activity
+            android:name=".EditFriendNameActivity"
+            android:label="@string/title_activity_edit_friend_name"
+            android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
         <activity
             android:name=".MainPageActivity"
             android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
+           <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
